@@ -25,7 +25,17 @@
 		"extends": [
 			"react-app",
 			"react-app/jest"
-		]
+		],
+		"env": {
+			"es6": true
+		},
+		"rules": {
+			"arrow-body-style": "off",
+			"no-trailing-spaces": "warn",
+			"semi": "off",
+			"quotes": ["warn", "double"],
+			"no-var": "warn"
+		}
 	},
 	"browserslist": {
 		"production": [

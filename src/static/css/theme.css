@@ -1,0 +1,50 @@
+
+:root {
+    --black: #000000;
+    --charcoal: rgba(21, 21, 21, 1);
+    
+    --cra-bg-original: rgb(40, 44, 52);
+    --off-black: rgb(60, 60, 60);
+    --summer-melon: rgb(252, 172, 106);
+
+    /* https://www.color-hex.com/color-palette/111682 */
+    --ocean-dysphoria-dark: rgb(67, 55, 90);
+
+    /* 
+    https://www.color-hex.com/color-palette/91354
+     */
+    --progeny-red: rgb(238,31,37);
+    --progeny-brick: rgb(147,61,65);
+    --progeny-taupe: rgb(156,132,129);
+    --progeny-mist: rgb(192,192,192);
+    --progeny-blue: rgb(25,94,131);
+
+    /***
+        https://www.color-hex.com/color-palette/99216
+    */
+    --regular-cyan: rgba(30, 213, 231, 1);    /* #1ed5e7  */
+    --aquamarine: rgba(0, 107, 117, 1);     /* #006b75  */
+    --elite-blue: rgba(0, 69, 104, 1);      /* #004568  */
+    --royal-blue: rgba(0, 47, 115, 1);      /* #002f73  */
+    --intense-blue: rgba(0, 39, 96, 1);       /* #002760  */        
+
+
+    /***
+        https://www.color-hex.com/color-palette/111561
+    */
+    --bog-orange: rgba(234,163,25, 1);   /* #eaa319 */
+    --bog-red: rgba(107,8,8, 1);      /* #6b0808  */
+    --bog-brick: rgba(69,7,38, 1);      /* #450726 */
+    --bog-deep-purple: rgba(26,6,43, 1);      /* #1a062b */
+    --bog-black-red: rgba(36,25,25, 1);     /* #241919 */
+
+
+    /***
+        https://www.color-hex.com/color-palette/111477
+    */
+    --purple-cult-5: rgba(123, 86, 242, 1);		/* #7b56f2 */
+    --purple-cult-4: rgba(113, 101, 240, 1);		/* #7165f0 */
+    --purple-cult-3: rgba(44, 95, 236, 1);		    /* #2c5fec */
+    --purple-cult-2: rgba(129, 83, 242, 1);		/* #8153f2 */
+    --purple-cult-1: rgba(149, 131, 208, 1);		/* #9583d0 */    
+}
