@@ -1,0 +1,19 @@
+/*** 
+Font import script.
+*/
+
+
+/***
+Fira Code
+*/
+@import url("https://cdn.jsdelivr.net/npm/firacode@5/distr/fira_code.min.css");
+
+/***
+Montserrat
+*/
+@import url("https://cdn.jsdelivr.net/npm/typeface-montserrat@1/index.min.css");
+
+/***
+Raleway
+*/
+@import url("https://cdn.jsdelivr.net/npm/raleway-webfont@3/raleway.min.css");
