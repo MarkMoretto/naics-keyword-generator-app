@@ -1,0 +1,26 @@
+# Database helper; Installs SQLAlchemy as dependency
+databases[postgresql]~=0.4.3
+
+# FastAPI
+fastapi==0.66.0
+
+# Logging
+loguru~=0.5.3
+
+# Fast JSON serializer (based on Rust)
+orjson==3.5.4
+
+# Testing
+httpx==0.18.2
+pytest==6.2.4
+pytest-asyncio==0.15.1
+
+# For testclient
+requests==2.25.1
+
+# Server
+uvicorn[standard]==0.14.0
+
+
+# Uncomment to include development.txt
+-r dev.txt
