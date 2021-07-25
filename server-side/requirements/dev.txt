@@ -4,3 +4,4 @@
 
 # Interactive Python
 ipython~=7.25.0
+prompt-toolkit~=2.0

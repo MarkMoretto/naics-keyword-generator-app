@@ -4,13 +4,14 @@ import re
 from io import BytesIO
 import concurrent.futures as ccf
 
-
-
 import requests
 import numpy as np
 import pandas as pd
-from openpyxl import load_workbook
-from openpyxl.worksheet.worksheet import Worksheet
+
+pd.set_option("display.max_colwidth", 80)
+pd.set_option("display.max_columns", None)
+pd.set_option("io.excel.xlsx.reader", "openpyxl")
+pd.set_option("mode.chained_assignment", None)
 
 
 naics_year: int = 2017
@@ -41,74 +42,103 @@ def retrieve_data(url: str) -> BytesIO:
         return _bio
 
 
-def data_to_ws(bytedata: BytesIO) -> Worksheet:
-    """Return openpyxl Worksheet object."""
-    _wb = load_workbook(bytedata)
-    return _wb[_wb.sheetnames[0]]
-
-
 def data_to_df(bytedata: BytesIO) -> pd.DataFrame:
     """Return pd.DataFrame object."""
     return pd.read_excel(bytedata)
 
+
+def clean_data(DF: pd.DataFrame, remove_stopwords = True):
+    cols = ["Title", "Description"]
+
+    if remove_stopwords:
+        _sw = get_stopwords()
+        _sw_dict = {rf"\b{w}\b": "" for w in _sw}
+
+    for c in cols:
+        DF.loc[:, c] = DF.loc[:, c].str.lower()
+
+        # Some titles end with 'T'; Remove that.
+        if c == "Title":
+            df.loc[:, c] = DF.loc[:, c].str.replace(r"T\s*?$", "", regex=True).str.strip()
+
+        DF.loc[:, c] = DF.loc[:, c].str.replace(r"(\r?\n+)", " ", regex=True)
+        DF.loc[:, c] = DF.loc[:, c].str.replace(r"[^\w\s\d-]", "", regex=True)
+
+        if c == "Description":
+            DF.loc[:, c] = DF.loc[:, c].replace(_sw_dict, regex=True)
+            DF.loc[:, c] = DF.loc[:, c].replace(r"\s{2,}", " ", regex=True)
+
+
+    return DF
+
+
+
+df1 = data_to_df(retrieve_data(urlmap["code_description"]))
+
+df = clean_data(df1)
+
+
 # --- Retrieve both assets simultaneously --- #
-with ccf.ThreadPoolExecutor(max_workers = len(urlmap) * 2) as e:
-    url_futures = {e.submit(retrieve_data, url):url_name for url_name, url in urlmap.items()}
-    for fut in ccf.as_completed(url_futures):
-        if url_futures[fut] == "code_index":
-            df_code = data_to_df(fut.result())
-        else:
-            df_desc = data_to_df(fut.result())
+# with ccf.ThreadPoolExecutor(max_workers = len(urlmap) * 2) as e:
+#     url_futures = {e.submit(retrieve_data, url):url_name for url_name, url in urlmap.items()}
+#     for fut in ccf.as_completed(url_futures):
+#         if url_futures[fut] == "code_index":
+#             df_code = data_to_df(fut.result())
+#         else:
+#             _df = data_to_df(fut.result())
+#             df = clean_data(_df)
 
 
 
 
 
-# List of rows
-# Usd for testing only.
-rlist = list(ws.rows)
+# from openpyxl import load_workbook
+# from openpyxl.worksheet.worksheet import Worksheet
+# # List of rows
+# # Usd for testing only.
+# rlist = list(ws.rows)
 
 
 
 
-stopwords = get_stopwords()
-colmap = {}
-for r in rlist[0]:
-    colmap[r.column_letter] = r.value
-    # ddict[r.column_letter] = []
+# stopwords = get_stopwords()
+# colmap = {}
+# for r in rlist[0]:
+#     colmap[r.column_letter] = r.value
+#     # ddict[r.column_letter] = []
 
-# # Populate dictionary with data
-# for r in rlist[1:101]:
+# # # Populate dictionary with data
+# # for r in rlist[1:101]:
+# #     for c in r:
+# #         ddict[c.column_letter].append(c.value)
+
+# no_stopwords = lambda s: [w for w in s if not w in stopwords]
+
+
+# clean_pattern = r"[^\w\s\d]"
+# p = re.compile(clean_pattern, flags = re.I)
+
+# ddict = {}
+# # for r in rlist[1:10]:
+# for r_idx, r in enumerate(ws.rows, start = 1):
+#     if r_idx > 11:
+#         break
+#     if r_idx > 1:
+#         __tokens = (
+#             re.split(r"\s+", \
+#                 p.sub("", str(ws.cell(r_idx, 2).value).lower())
+#                 )
+#             )
+#         ddict[ws.cell(r_idx, 1).value] = no_stopwords(__tokens)
+
+#         for c_idx, c in enumerate(ws.columns, start = 1):
+#             print(r_idx, c_idx, ws.cell(r_idx, c_idx).value)
+    
+# sample = "Oilseed farming (except soybean), field and seed production"
+# re.sub(r"[^\w\s\d]", "", sample)
+
 #     for c in r:
 #         ddict[c.column_letter].append(c.value)
-
-no_stopwords = lambda s: [w for w in s if not w in stopwords]
-
-
-clean_pattern = r"[^\w\s\d]"
-p = re.compile(clean_pattern, flags = re.I)
-
-ddict = {}
-# for r in rlist[1:10]:
-for r_idx, r in enumerate(ws.rows, start = 1):
-    if r_idx > 11:
-        break
-    if r_idx > 1:
-        __tokens = (
-            re.split(r"\s+", \
-                p.sub("", str(ws.cell(r_idx, 2).value).lower())
-                )
-            )
-        ddict[ws.cell(r_idx, 1).value] = no_stopwords(__tokens)
-
-        for c_idx, c in enumerate(ws.columns, start = 1):
-            print(r_idx, c_idx, ws.cell(r_idx, c_idx).value)
-    
-sample = "Oilseed farming (except soybean), field and seed production"
-re.sub(r"[^\w\s\d]", "", sample)
-
-    for c in r:
-        ddict[c.column_letter].append(c.value)
 
 
 # --- Neural Net / Word2Vec --- #
