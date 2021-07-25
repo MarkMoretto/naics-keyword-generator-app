@@ -5,12 +5,11 @@ __all__ = [
 
 import sys
 import logging
+from random import choices
 from typing import Optional
 from datetime import datetime as dt
 
 # Third-party imports
-import databases
-from loguru import logger
 from fastapi import APIRouter, FastAPI
 from starlette.requests import Request
 from starlette.config import environ
@@ -24,10 +23,8 @@ from starlette.middleware.cors import CORSMiddleware
 
 
 # Local imports
-# from .char_counter.char_counter import count_chars
-# from .config import prod_settings, dev_settings
-# from .logging.handlers import InterceptHandler
-# from .logging.utils import get_log_level
+from .config import prod_settings, dev_settings
+from .datadata import get_stopwords
 
 
 # API  init
@@ -45,35 +42,8 @@ SECRET_KEY: str  = config("SECRET_KEY", cast=Secret)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=CommaSeparatedStrings)
 
 
-# Docker log level
-if DEBUG:
-    LOGGING_LEVEL = get_log_level("debug")
-else:
-    LOGGING_LEVEL = get_log_level(environ["LOG_LEVEL"].lower())
-# ENV_LOG_LEVEL = get_log_level(ENV_LOG_LEVEL.lower())
-
-
-# Configure logging.
-# LOGGING_LEVEL = get_log_level(logging.DEBUG if DEBUG else ENV_LOG_LEVEL)
-LOGGERS = ("uvicorn.asgi", "uvicorn.access")
-
-logging.getLogger().handlers = [InterceptHandler()]
-for logger_name in LOGGERS:
-    logging_logger = logging.getLogger(logger_name)
-    logging_logger.handlers = [InterceptHandler(level=LOGGING_LEVEL)]
-
-log_handlers=[{
-    "sink": sys.stderr,
-    "level": LOGGING_LEVEL,
-    }]
-
-logger.configure(handlers=log_handlers)
-
-
-
-
-# Instance app
-# app = FastAPI(title = settings.APP_NAME, debug = settings.DEBUG)
+# Set list of stopwords on startup.
+stopwords = get_stopwords()
 
 
 # Errors
@@ -105,6 +75,26 @@ async def home() -> ORJSONResponse:
     }
     return ORJSONResponse(status_code=200, content = msg)
 
+
+@api.get("/stopwords", response_class = ORJSONResponse)
+async def counter(sample_size: Optional[int] = -1) -> ORJSONResponse:
+    """
+    # Retrieve list of common English stopwords.
+
+    &nbsp;
+
+    ## Parameters
+    \----------------
+    - **sample_size** {_int_} - Number of random stopwords to retrieve.
+    """
+    _sw = stopwords
+    if sample_size > 0:
+        _sw = choices(stopwords, k = sample_size)
+    msg = {
+        "stopwords": _sw
+    }
+    return ORJSONResponse(status_code=200, content = msg)
+    
 
 
 @api.get("/count/{phrase}", response_class = ORJSONResponse)

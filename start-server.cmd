@@ -18,9 +18,9 @@
 ::SET hostdev=127.0.0.1
 :: SET hostprod=0.0.0.0
 ::SET GUNICORN_CMD_ARGS="--bind=0.0.0.0 --workers=3 --log-level 'info'"
-
+CD server-side
 SET entrypoint=src.main:app
-SET startdev=uvicorn %entrypoint%
+SET startdev=uvicorn %entrypoint% --reload
 ::PAUSE
 
 ::SET startdev=uvicorn --host %hostdev% --port %port% --reload --log-config %LOG_FOLDER%\config.yaml --log-level %DEV_LOG_LEVEL% --backlog 2048 %entrypoint%
