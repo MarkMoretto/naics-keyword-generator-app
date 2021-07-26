@@ -28,4 +28,5 @@ SET startdev=uvicorn %entrypoint% --reload
 
 
 CALL venv\Scripts\activate && %startdev%
-PAUSE
+
+GOTO :eof

@@ -6,14 +6,14 @@ const navLinks = [
     },
     {
         id: 2,
-        path: "/about",
-        text: "About",
-    },
-    {
-        id: 3,
         path: "/random-stopwords",
         text: "Stopwords",
     },    
+    {
+        id: 3,
+        path: "/about",
+        text: "About",
+    }
 ]
 
 export default navLinks

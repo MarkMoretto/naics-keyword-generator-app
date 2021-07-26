@@ -129,6 +129,22 @@ a:hover {
 }
 
 
+.outer-container {
+	display: flex;
+	flex-flow: column wrap;
+	justify-content: center;
+	align-items: center;
+	max-width: calc(100vw * 0.6);
+	margin: 0 auto;
+}
+
+
+.inner-container {
+	width: 100%;
+	padding: 8rem 10px 4rem;
+}
+
+
 .form-container {
 	width: 100%;
 	margin-bottom: 20px;
