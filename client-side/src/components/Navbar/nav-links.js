@@ -9,6 +9,11 @@ const navLinks = [
         path: "/about",
         text: "About",
     },
+    {
+        id: 3,
+        path: "/random-stopwords",
+        text: "Stopwords",
+    },    
 ]
 
 export default navLinks

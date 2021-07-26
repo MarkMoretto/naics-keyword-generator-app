@@ -15,7 +15,7 @@ const App = () => {
 			<Switch>
 				<Route exact path="/">
 					<div className="container">
-						<p>Hello!</p>
+						<h1>Hello!</h1>
 					</div>
 				</Route>
 				<Route path="/about">

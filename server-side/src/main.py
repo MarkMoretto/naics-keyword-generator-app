@@ -24,7 +24,7 @@ from starlette.middleware.cors import CORSMiddleware
 
 # Local imports
 from .config import prod_settings, dev_settings
-from .datadata import get_stopwords
+from ._preprocess import get_stopwords
 
 
 # API  init

@@ -1,8 +1,5 @@
 @ECHO Off
 
-::CD src
-
-::python main.py
 
 
 ::START "flask" %comspec% /c start-flask.cmd

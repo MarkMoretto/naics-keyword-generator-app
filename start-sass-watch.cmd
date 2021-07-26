@@ -2,6 +2,6 @@
 
 CD client-side
 
-START "sass" %ComSpec% /k "(yarn sass:watch)"
+START "sass" %ComSpec% /c "(yarn sass:watch)"
 
 GOTO :EOF

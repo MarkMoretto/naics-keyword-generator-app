@@ -1,0 +1,36 @@
+/**
+ * Basic typography style for copy text
+*/
+
+/***
+Fira Code
+*/
+@import url("https://cdn.jsdelivr.net/npm/firacode@5/distr/fira_code.min.css");
+
+/***
+Montserrat
+*/
+@import url("https://cdn.jsdelivr.net/npm/typeface-montserrat@1/index.min.css");
+
+/***
+Raleway
+*/
+@import url("https://cdn.jsdelivr.net/npm/raleway-webfont@3/raleway.min.css");
+
+
+$base-font-size: 62.5%;
+$body-font-family: "Raleway", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+$header-font-family: "Montserrat", "Roboto", sans-serif;
+$code-font-family: "Fira Code", monospace;
+
+
+html {
+    font-size: $base-font-size;
+}
+
+
+body {
+	text-rendering: optimizeSpeed;
+	font-size: 1.6em;
+    font-family: $body-font-family;
+}

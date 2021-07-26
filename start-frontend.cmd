@@ -1,5 +1,9 @@
 @ECHO Off
 
+:: https://create-react-app.dev/docs/advanced-configuration
+SET BROWSER=none
+
+
 CD client-side
 
 SET cmd=yarn start

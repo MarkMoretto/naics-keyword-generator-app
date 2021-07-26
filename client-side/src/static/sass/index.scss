@@ -1,8 +1,23 @@
 
-@use "sass:meta";
+@charset "utf-8";
 
-@use "./font-imports";
-@use "./themes";
+/***
+Fira Code
+*/
+@import url("https://cdn.jsdelivr.net/npm/firacode@5/distr/fira_code.min.css");
+
+/***
+Montserrat
+*/
+@import url("https://cdn.jsdelivr.net/npm/typeface-montserrat@1/index.min.css");
+
+/***
+Raleway
+*/
+@import url("https://cdn.jsdelivr.net/npm/raleway-webfont@3/raleway.min.css");
+
+@use "./themes/main";
+
 
 // Font family variales.
 $base-font-size: 62.5%;
@@ -10,6 +25,8 @@ $body-font-family: "Raleway", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 $header-font-family: "Montserrat", "Roboto", sans-serif;
 $code-font-family: "Fira Code", monospace;
 
+// Misc. Styles
+$border-radius-px: 100px;
 
 *,
 *::before,
@@ -33,13 +50,13 @@ body {
 	text-rendering: optimizeSpeed;
 	font-size: 1.6em;
     line-height: 1.5;
-    background: $progeny-mist;
-	color: $progeny-blue;
-    font-family: #{meta.inspect($body-font-family)};
+    background: $progeny_mist;
+	color: $progeny_blue;
+    font-family: $body-font-family;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: #{meta.inspect($header-font-family)};
+    font-family: $header-font-family;
 }
 
 h1 {
@@ -88,7 +105,7 @@ picture {
 	display: block;
 }
 
-/* Inherit fonts for inputs and buttons */
+// Inherit fonts for inputs and buttons
 input,
 button,
 textarea,
@@ -123,25 +140,24 @@ ol[role='list'] {
 /*  Custom formatting. */
 
 a {
-	color: $progeny-brick;
+	color: $progeny_brick;
 	text-decoration: none;
 	font-weight: 500;
 }
 
 a:hover {
-	color: $progeny-red;
+	color: $progeny_red;
 	font-weight: 600;
 }
 
 .stronger {
-	color: $progeny-brick;
+	color: $progeny_brick;
 	text-decoration: none;
 	font-weight: 500;
 }
 
 
 .form-container {
-    $border-radius-px: 100px;
 	width: 100%;
 	margin-bottom: 20px;
 	display: flex;
@@ -157,12 +173,12 @@ a:hover {
 	width: 85%;
 	padding-right: 5px;
 	padding-left: 10px;
-	border-radius: calc(0.5 * 100px);
+	border-radius: $border-radius-px * 0.5;
 }
 
 
 
 // Font and special section styles
 code {
-	font-family: #{meta.inspect($code-font-family)};
+	font-family: $code-font-family;
 }
