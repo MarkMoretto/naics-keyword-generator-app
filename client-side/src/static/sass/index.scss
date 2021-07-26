@@ -1,0 +1,168 @@
+
+@use "sass:meta";
+
+@use "./font-imports";
+@use "./themes";
+
+// Font family variales.
+$base-font-size: 62.5%;
+$body-font-family: "Raleway", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+$header-font-family: "Montserrat", "Roboto", sans-serif;
+$code-font-family: "Fira Code", monospace;
+
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+    font-size: $base-font-size;
+    &:focus-within {
+        scroll-behavior: smooth;
+    }
+}
+
+
+body {
+	min-height: 100vh;
+	text-rendering: optimizeSpeed;
+	font-size: 1.6em;
+    line-height: 1.5;
+    background: $progeny-mist;
+	color: $progeny-blue;
+    font-family: #{meta.inspect($body-font-family)};
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: #{meta.inspect($header-font-family)};
+}
+
+h1 {
+    font-size: 5em;
+}
+
+
+h2 {
+    font-size: 4.25em;
+}
+
+h3 {
+    font-size: 3.5em;
+}
+
+h4 {
+    font-size: 3em;
+	font-style: italic;
+}
+
+h5 {
+    font-size: 2.5em;
+}
+
+h6 {
+    font-size: 2em;
+}
+
+
+p {
+	font-size: 1.2em;
+}
+
+
+// `a` elements that don't have a class get default styles
+a{
+    &:not([class]) {
+        text-decoration-skip-ink: auto;
+    }
+}
+
+/* Make images easier to work with */
+img,
+picture {
+	max-width: 100%;
+	display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+	font: inherit;
+}
+
+ul[role='list'],
+ol[role='list'] {
+	list-style: none;
+}
+
+
+/* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+	html:focus-within {
+		scroll-behavior: auto;
+	}
+	
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+
+
+/*  Custom formatting. */
+
+a {
+	color: $progeny-brick;
+	text-decoration: none;
+	font-weight: 500;
+}
+
+a:hover {
+	color: $progeny-red;
+	font-weight: 600;
+}
+
+.stronger {
+	color: $progeny-brick;
+	text-decoration: none;
+	font-weight: 500;
+}
+
+
+.form-container {
+    $border-radius-px: 100px;
+	width: 100%;
+	margin-bottom: 20px;
+	display: flex;
+	border-radius: $border-radius-px * 0.5;
+	box-shadow: 0 1px 6px 0 rgba($black, 0.38);
+	justify-content: space-evenly;
+}
+
+
+.input-text {
+	font-size: 1rem;
+	font-weight: 400;
+	width: 85%;
+	padding-right: 5px;
+	padding-left: 10px;
+	border-radius: calc(0.5 * 100px);
+}
+
+
+
+// Font and special section styles
+code {
+	font-family: #{meta.inspect($code-font-family)};
+}

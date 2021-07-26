@@ -2,7 +2,6 @@ import React from "react"
 import { Route, Switch } from "react-router-dom"
 
 import Navbar from "../Navbar"
-import Naics from "../Naics"
 import About from "../pages/About"
 import PageNotFound from "../pages/PageNotFound"
 
@@ -16,7 +15,7 @@ const App = () => {
 			<Switch>
 				<Route exact path="/">
 					<div className="container">
-						<Naics />
+						<p>Hello!</p>
 					</div>
 				</Route>
 				<Route path="/about">
