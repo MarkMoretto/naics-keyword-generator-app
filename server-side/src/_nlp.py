@@ -5,13 +5,15 @@
 # from nltk.stem.porter import PorterStemmer
 import re
 from gensim import corpora, similarities
-from gensim.models import LsiModel, LdaModel
+from gensim.models import LsiModel, LdaModel, LdaMulticore, TfidfModel
 
 # from ._preprocess import df_for_nlp
 from src._preprocess import df_for_nlp
+from src import DATA_DIR, Path
 
 
 df = df_for_nlp(min_frequency=1)
+df = df.apply(lambda c: [i for i in c if not i.startswith("-")])
 
 VERBOSE: bool = False
 # Create p_stemmer of class PorterStemmer
@@ -20,13 +22,14 @@ VERBOSE: bool = False
 
 documents = df.values
 
-dictionary = corpora.Dictionary(df.values)
+dictionary = corpora.Dictionary(documents)
 corpus = [dictionary.doc2bow(r) for r in documents]
 
 
-TEST_QUERY = "health care"
+TEST_QUERY = "healthcare providers"
 LSI_FILEPATH: Path = DATA_DIR.joinpath("lsi-model.index")
 LDA_FILEPATH: Path = DATA_DIR.joinpath("lda-model.index")
+LDAM_FILEPATH: Path = DATA_DIR.joinpath("ldam-model.index")
 
 vec_bow = dictionary.doc2bow(re.split(r"[^\w-]+", TEST_QUERY.lower()))
 
@@ -87,3 +90,44 @@ lda_index.save(str(LDA_FILEPATH.absolute()))
 lda_similarities = lda_index[vec_lda]
 sorted_lda_similarities = sim_sort(lda_similarities)
 print_sims(sorted_lda_similarities)
+
+
+### LDA multicore
+ldam = LdaMulticore(corpus, num_topics = 10, id2word = dictionary, passes=2, workers = 2)
+vec_ldam = ldam[vec_bow]
+print(vec_ldam)
+
+for topic, words in ldam.print_topics(-1):
+    print(f"Topic #: {topic}\nWords: {words}")
+
+# print(ldam.print_topics(num_topics=2, num_words=3))
+# print(ldam.print_topics(num_topics=3, num_words=3))
+
+ldam_index = similarities.MatrixSimilarity(ldam[corpus])
+
+ # Save model
+ldam_index.save(str(LDAM_FILEPATH.absolute()))
+
+### Print similarities
+ldam_similarities = ldam_index[vec_ldam]
+sorted_ldam_similarities = sim_sort(ldam_similarities)
+print_sims(sorted_ldam_similarities)
+
+
+#### Tf-Idf
+tfidf = TfidfModel(corpus)
+corpus_tfidf = tfidf[corpus]
+ldam_tfidf = LdaMulticore(corpus_tfidf, num_topics=10, id2word=dictionary, passes=2, workers=4)
+for topic, words in ldam_tfidf.print_topics(-1):
+    print(f"Topic #: {topic}\nWords: {words}")
+
+
+test_idx: int = 100
+sample_docs = documents[test_idx]
+
+for index, score in sorted(ldam[corpus[test_idx]], key=lambda X: -1 * X[1]):
+    print(f"\nScore: {score}\t \nTopic: {ldam.print_topic(index, 10)}")
+
+
+for index, score in sorted(ldam_tfidf[corpus[test_idx]], key=lambda X: -1 * X[1]):
+    print(f"\nScore: {score}\t \nTopic: {ldam_tfidf.print_topic(index, 10)}")

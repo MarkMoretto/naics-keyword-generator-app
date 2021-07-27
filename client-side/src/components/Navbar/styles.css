@@ -6,7 +6,7 @@ nav {
 
 
 .navBar {
-    height: 75px;
+    height: 100px;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
@@ -72,5 +72,5 @@ li a:hover {
     stroke: #ffffff;
     stroke-width: 0.25px;
     fill: #4a7729;
-    border: 1px solid #ffffff;
+    /* border: 1px solid #ffffff; */
 }

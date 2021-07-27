@@ -5,7 +5,7 @@ __all__ = [
 
 import sys
 import logging
-from random import choices
+from random import choices, sample as rand_sample
 from typing import Optional
 from datetime import datetime as dt
 
@@ -89,7 +89,8 @@ async def counter(sample_size: Optional[int] = -1) -> ORJSONResponse:
     """
     _sw = stopwords
     if sample_size > 0:
-        _sw = choices(stopwords, k = sample_size)
+        # _sw = choices(stopwords, k = sample_size)
+        _sw = rand_sample(stopwords, k = sample_size)
     msg = {
         "stopwords": _sw
     }

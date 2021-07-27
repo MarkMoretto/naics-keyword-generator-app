@@ -1,0 +1,46 @@
+
+
+
+.form-container {
+	width: 100%;
+	margin-bottom: 20px;
+	display: flex;
+	border-radius: calc(0.5 * 100px);
+	box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.38);
+	justify-content: space-evenly;
+}
+
+
+.input-text {
+	font-size: 1rem;
+	font-weight: 400;
+	width: 85%;
+	padding-right: 5px;
+	padding-left: 10px;
+	border-radius: calc(0.5 * 100px);
+}
+
+
+.stopword-btn {
+    min-width: 55px;
+}
+
+/* 
+	https://css-tricks.com/snippets/css/complete-guide-grid/
+*/
+.grid-list {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 10px;
+	place-items: center;
+	/* grid-auto-rows: minmax(50px, auto); */
+}
+
+
+
+#stopword-list {
+	font-size: 1.75rem;
+	margin: 0 auto;
+	border: 1px solid blue;
+}
+

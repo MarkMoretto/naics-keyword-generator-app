@@ -1,0 +1,29 @@
+/* 
+	https://css-tricks.com/snippets/css/complete-guide-grid/
+*/
+.grid-list {
+	display: grid;
+	gap: 10px;
+	place-items: center;
+	/* grid-auto-rows: minmax(50px, auto); */
+}
+
+.col-1 {
+	grid-template-columns: repeat(1, 1fr);	
+}
+
+.col-2 {
+	grid-template-columns: repeat(2, 1fr);	
+}
+
+.col-3 {
+	grid-template-columns: repeat(3, 1fr);	
+}
+
+.col-4 {
+	grid-template-columns: repeat(4, 1fr);	
+}
+
+.col-5 {
+	grid-template-columns: repeat(5, 1fr);	
+}

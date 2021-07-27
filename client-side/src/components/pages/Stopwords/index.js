@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import Griddy from "../../Griddy"
 
 import "./styles.css"
 
@@ -79,12 +80,15 @@ const Stopwords = () => {
                         onFocus={(e) => e.target.placeholder = ""} 
                         onBlur={(e) => e.target.placeholder = "..."}                        
                     />
-                    <button type="submit">Go!</button>
-                    <button type="reset">Reset</button>
+                    <button class="stopword-btn" type="submit">Go!</button>
+                    <button class="stopword-btn" type="reset">Reset</button>
                 </form>
             </div>
-            <div>
-                <ul>
+
+            <div id="stopword-list">
+                <Griddy itemArray={stopwords} numberColumns={4} classname={"stopword-list"} />
+
+                {/* <ul className="grid-list">
                 {Object.entries(stopwords).length > 0 
                 && Object.values(stopwords)[0].map(word => {
                     return (
@@ -92,7 +96,7 @@ const Stopwords = () => {
                         )
                     })
                 }
-                </ul>
+                </ul> */}
             </div>
         </>
     )
