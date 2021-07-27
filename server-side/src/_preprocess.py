@@ -98,14 +98,10 @@ def retrieve_data(url: str) -> DataFrame:
 
 
 
-def clean_data(DF: DataFrame, remove_stopwords = True) -> DataFrame:
+def clean_data(DF: DataFrame, exclude_stopwords = True) -> DataFrame:
     """Return pandas DaraFrame following "clean-up" of text data."""
 
     cols = ["Title", "Description"]
-
-    if remove_stopwords:
-        _sw = get_stopwords()
-        _sw_dict = {rf"\b{w}\b": "" for w in _sw if len(w) > 1}
 
     for c in cols:
         DF.loc[:, c] = DF.loc[:, c].str.lower()
@@ -121,14 +117,20 @@ def clean_data(DF: DataFrame, remove_stopwords = True) -> DataFrame:
 
         if c == "Description":
             DF.loc[:, c] = DF.loc[:, c].replace(r"\s{2,}", " ", regex=True)
-            DF.loc[:, c] = DF.loc[:, c].replace(_sw_dict, regex=True)            
+
+            # Remove stopwords
+            if exclude_stopwords:
+                _sw = get_stopwords()
+                _sw_dict = {rf"\b{w}\b": "" for w in _sw if len(w) > 1}            
+                DF.loc[:, c] = DF.loc[:, c].replace(_sw_dict, regex=True)   
+                        
             DF.loc[:, c] = DF.loc[:, c].str.strip()
             DF.loc[DF[c].isna(), c] = ""
 
     return DF
 
 
-def create_and_clean_df(url: str = urlmap["code_description"]) -> DataFrame:
+def create_and_clean_df(url: str = urlmap["code_description"], remove_stopwords = True) -> DataFrame:
 
     # Get data from data source
     _df = retrieve_data(url)
@@ -137,7 +139,7 @@ def create_and_clean_df(url: str = urlmap["code_description"]) -> DataFrame:
     df_dependent = _df.loc[:, "Code"]
 
     # Set independent (predictor) values dataframe.
-    df_independent = clean_data(_df.drop("Code", axis=1))
+    df_independent = clean_data(_df.drop("Code", axis=1), remove_stopwords)
 
     return df_dependent, df_independent
 
@@ -155,7 +157,7 @@ def create_word_corpus(DF: DataFrame, col_name: str = "Description") -> DataFram
 
     # Clean-up words with hyphens at the start or items that are only hyphens.
     _corpus.loc[_corpus["token"].str.startswith("-", na=False), "token"] = (
-        _corpus.loc[_corpus["token"].str.startswith("-", na=False), "token"].str.replace(r"-+", "", regex=True)
+        _corpus.loc[_corpus["token"].str.startswith("-", na=False), "token"].str.replace(r"[-]+", "", regex=True)
     )
 
     # Remove row(s) with blank value and return results.
@@ -200,6 +202,7 @@ def df_for_nlp(min_frequency: int = 1):
     freq_vals = (word_count.loc[word_count["freq"] > min_frequency, "token"]).values
     freq_map = {f"\b{w}\b":"" for w in freq_vals}
     _df = _df.replace(freq_map, regex=True)
+    _df = _df.apply(lambda c: [i for i in c if not i.startswith("-")])
 
     return _df
 

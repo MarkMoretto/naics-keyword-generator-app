@@ -13,9 +13,13 @@ from src import DATA_DIR, Path
 
 
 df = df_for_nlp(min_frequency=1)
-df = df.apply(lambda c: [i for i in c if not i.startswith("-")])
+# df = df.apply(lambda c: [i for i in c if not i.startswith("-")])
 
 VERBOSE: bool = False
+
+# Number of results to retireve.
+N_RESULTS: int = 10
+
 # Create p_stemmer of class PorterStemmer
 # p_stemmer = PorterStemmer()
 # df_stem = df.loc[:15, "token"].apply(lambda r: [p_stemmer.stem(i) for i in r])
@@ -55,8 +59,7 @@ lsi_index.save(str(LSI_FILEPATH.absolute()))
 # Range is (-1, 1), with -1 being the least similar and 1 being the most similar #
 lsi_similarities = lsi_index[vec_lsi]
 
-# Number of results to retireve.
-N_RESULTS: int = 10
+
 sim_sort = lambda sims: sorted(enumerate(sims), key = lambda Q: -Q[1])
 sorted_similarities = sim_sort(lsi_similarities)
 
@@ -92,6 +95,8 @@ sorted_lda_similarities = sim_sort(lda_similarities)
 print_sims(sorted_lda_similarities)
 
 
+
+#######################
 ### LDA multicore
 ldam = LdaMulticore(corpus, num_topics = 10, id2word = dictionary, passes=2, workers = 2)
 vec_ldam = ldam[vec_bow]
