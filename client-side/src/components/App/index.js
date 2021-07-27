@@ -6,8 +6,9 @@ import About from "../pages/About"
 import Stopwords from "../pages/Stopwords"
 import PageNotFound from "../pages/PageNotFound"
 
-import "./styles.css"
-
+// client-side\src\static\image\brands\humana\h-logo.svg
+// import HLogo from "../../static/image/brands/humana/h-logo.svg"
+// import Humana from "../logos/Humana"
 
 const App = () => {
 	return (
