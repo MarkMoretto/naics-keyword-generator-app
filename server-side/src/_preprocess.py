@@ -1,5 +1,3 @@
-# server-side\src\_preprocess.py
-
 __all__ = [
     "df_for_nlp",
     "create_and_clean_df",
@@ -17,7 +15,7 @@ import requests
 import numpy as np
 from pandas import DataFrame, factorize, read_excel, set_option as pd_set_option
 
-from ._types import (
+from src._types import (
     Dict,
     List,
     Number,
@@ -32,21 +30,23 @@ from src import DATA_DIR, Path
 
 
 DEBUG: bool = True
+NAICS_YEAR: int = 2017
+LOCAL_NAICS_DESC_XLSX_PATH: Path = DATA_DIR.joinpath(f"naics-desc-{NAICS_YEAR}.xlsx")
+LOCAL_CSV_DATA_PATH: Path = DATA_DIR.joinpath("naics-main.csv")
+STOPWORD_PATH = DATA_DIR.joinpath("stopwords.txt")
 
 # --- Pandas options --- #
 pd_set_option("io.excel.xlsx.reader", "openpyxl")
 pd_set_option("mode.chained_assignment", None)
+
 if DEBUG:
     pd_set_option("display.max_colwidth", 80)
     pd_set_option("display.max_columns", 25)
-
-
     logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.DEBUG)
 else:
     logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
 
-NAICS_YEAR: int = 2017
 
 urlmap: Dict = dict(
     code_index = f"https://www.census.gov/naics/{NAICS_YEAR}NAICS/{NAICS_YEAR}_NAICS_Index_File.xlsx",
@@ -58,9 +58,11 @@ def _set_stopwords(output_path: Path) -> None:
     _url = "https://gist.github.com/sebleier/554280/raw/7e0e4a1ce04c2bb7bd41089c9821dbcf6d0c786c/NLTK's%2520list%2520of%2520english%2520stopwords"
     with requests.Session() as s:
         resp = s.get(_url)
-        stopwords_raw = resp.text
+        sw_raw = resp.text
+        sw_out = [i for i in sw_raw.split("\n") if len(i) > 1]
         with output_path.open(mode="w") as outf:
-            outf.write(stopwords_raw)
+            outf.write("\n".join(sw_out))
+            
 
 
 def get_stopwords(min_stopword_len: int = 1) -> List:
@@ -88,26 +90,27 @@ def get_stopwords(min_stopword_len: int = 1) -> List:
 
 
 # --- Retrieve data from census.gov --- #
-def retrieve_data(url: str) -> DataFrame:
+def retrieve_data(url: str = urlmap["code_description"]) -> DataFrame:
     """Return BytesIO object representing MS Excel workbook."""
     _resp = requests.get(url)
     _bio = BytesIO(_resp.content)
     if _bio:
         _bio.seek(0)
-        return read_excel(_bio)
-
+        _df = read_excel(_bio, engine="openpyxl")
+        _df.columns = list(map(str.lower, _df.columns))
+        return _df
 
 
 def clean_data(DF: DataFrame, exclude_stopwords = True) -> DataFrame:
     """Return pandas DaraFrame following "clean-up" of text data."""
 
-    cols = ["Title", "Description"]
+    cols = ["title", "description"]
 
     for c in cols:
         DF.loc[:, c] = DF.loc[:, c].str.lower()
 
         # Some titles end with 'T'; Remove that.
-        if c == "Title":
+        if c == "title":
             DF.loc[:, c] = DF.loc[:, c].str.replace(r"t\s*?$", "", regex=True).str.strip()
             DF.loc[DF[c].isna(), c] = ""
 
@@ -115,7 +118,7 @@ def clean_data(DF: DataFrame, exclude_stopwords = True) -> DataFrame:
         DF.loc[:, c] = DF.loc[:, c].str.replace(r"(\r?\n+)", "  ", regex=True)
         DF.loc[:, c] = DF.loc[:, c].str.replace(r"[^a-zA-Z- ]", "  ", regex=True)
 
-        if c == "Description":
+        if c == "description":
             DF.loc[:, c] = DF.loc[:, c].replace(r"\s{2,}", " ", regex=True)
 
             # Remove stopwords
@@ -136,20 +139,20 @@ def create_and_clean_df(url: str = urlmap["code_description"], remove_stopwords 
     _df = retrieve_data(url)
 
     # Set dependent column data set (if we were going to predict class)
-    df_dependent = _df.loc[:, "Code"]
+    df_dependent = _df.loc[:, "code"]
 
     # Set independent (predictor) values dataframe.
-    df_independent = clean_data(_df.drop("Code", axis=1), remove_stopwords)
+    df_independent = clean_data(_df.drop("code", axis=1), remove_stopwords)
 
     return df_dependent, df_independent
 
 
-def create_word_corpus(DF: DataFrame, col_name: str = "Description") -> DataFrame:
+def create_word_corpus(DF: DataFrame, col_name: str = "description", min_word_length: int = 1) -> DataFrame:
     """Return pandas DaraFrame representing corpus of tokenized words."""
 
     _corpus = (
-        DF.loc[:, col_name].str.split(r"\s+")
-        .apply(lambda r: [w for w in r if len(w) > 1])
+        DF.loc[:, col_name].str.split(r"\s+")           # Split on white space
+        .apply(lambda r: [w for w in r if len(w) > min_word_length])  # take workds with character counts over a given minimum.
         .explode()
         .to_frame("token")
         ).sort_values(by=["token"])
@@ -180,10 +183,11 @@ def corpus_effects(corp: DataFrame) -> Tuple[StrDict, StrDict, int]:
 
 
 def df_for_nlp(min_frequency: int = 1):
+    """Data is """
     # --- Set some variables -- #
     df_dep, _df = create_and_clean_df()
 
-    _df = _df.loc[:, "Description"].str.split(r"\s+").apply(lambda r: [w for w in r if len(w) > 1])
+    _df = _df.loc[:, "description"].str.split(r"\s+").apply(lambda r: [w for w in r if len(w) > 1])
 
     dfx = _df.explode().to_frame("token").reset_index(drop=True)
 
@@ -205,5 +209,4 @@ def df_for_nlp(min_frequency: int = 1):
     _df = _df.apply(lambda c: [i for i in c if not i.startswith("-")])
 
     return _df
-
 

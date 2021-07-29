@@ -80,9 +80,7 @@ async def home() -> ORJSONResponse:
 async def counter(sample_size: Optional[int] = -1) -> ORJSONResponse:
     """
     # Retrieve list of common English stopwords.
-
     &nbsp;
-
     ## Parameters
     \----------------
     - **sample_size** {_int_} - Number of random stopwords to retrieve.

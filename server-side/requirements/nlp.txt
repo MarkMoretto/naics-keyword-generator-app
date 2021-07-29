@@ -2,3 +2,7 @@
 
 gensim~=3.8
 nltk~=3.6
+scikit-learn~=0.24.2
+
+# This is a large installation
+# torch~=1.9
