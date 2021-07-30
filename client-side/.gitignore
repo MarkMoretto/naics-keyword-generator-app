@@ -26,3 +26,4 @@ yarn-error.log*
 # Local
 .vscode/
 dev[_-]*.*
+**/src/static/image/*
