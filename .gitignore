@@ -150,3 +150,4 @@ cython_debug/
 
 .vscode/
 dev[_-]*.*
+client-side/src/static/image/brands/**/*.svg

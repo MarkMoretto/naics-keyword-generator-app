@@ -87,16 +87,6 @@ const Stopwords = () => {
 
             <div id="stopword-list">
                 <Griddy itemArray={stopwords} numberColumns={4} classname={"stopword-list"} />
-
-                {/* <ul className="grid-list">
-                {Object.entries(stopwords).length > 0 
-                && Object.values(stopwords)[0].map(word => {
-                    return (
-                        <li id={word}>{word}</li>
-                        )
-                    })
-                }
-                </ul> */}
             </div>
         </>
     )
