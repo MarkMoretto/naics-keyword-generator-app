@@ -1,6 +1,20 @@
 
+import DataList from "../DataList"
 
-const InputField = (props) => {
+/**
+ * 
+*/
+
+let start = 0
+,   stepsize = 1
+
+let numArr = [...Array(5)].map((_, i) => i)
+const quantityOptions = [
+    {id: 0, value: " "},
+    {id: 1, value: "1"},
+]
+
+const InputField = props => {
 
     return (
         <>
@@ -13,6 +27,7 @@ const InputField = (props) => {
                 onFocus={(e) => e.target.placeholder = ""} 
                 onBlur={(e) => e.target.placeholder = "..."}                        
             />
+            <DataList />
         </>
     )
 }

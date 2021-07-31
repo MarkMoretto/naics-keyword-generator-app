@@ -20,6 +20,9 @@ httpx==0.18.2
 loguru~=0.5.3
 
 
+# Internet resource parsing
+lxml~=4.6.3
+
 # Data processing
 numpy
 
