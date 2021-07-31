@@ -1,8 +1,12 @@
 #### Packages related to text processing ###
 
-gensim~=3.8
+gensim>=4.0.0
 nltk~=3.6
 scikit-learn~=0.24.2
+
+# Handle UserWarning when installing Gensim 4.0+
+python-Levenshtein~=0.12.2
+
 
 # This is a large installation
 # torch~=1.9
