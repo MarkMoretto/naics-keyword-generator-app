@@ -7,6 +7,14 @@ scikit-learn~=0.24.2
 # Handle UserWarning when installing Gensim 4.0+
 python-Levenshtein~=0.12.2
 
+# spaCy
+# Requires running `python -m spacy download en_core_web_sm` after install
+#   e.g. - `python -m pip install -U spacy && python -m spacy download en_core_web_sm`
+spacy~=3.1.1
 
 # This is a large installation
 # torch~=1.9
+
+# MxNet (native skips installation of DNN)
+# mxnet-native
+mxnet~=1.7.0
