@@ -1,0 +1,18 @@
+
+
+
+.keyword-list {
+	min-width: 50%;
+	display: flex;
+	flex-flow: column wrap;
+	/* align-items: center; */
+	justify-content: space-between;
+	align-content: center;	
+}
+
+.keyword-list ul,
+.keyword-list ol {
+	display: inline-block;
+	border: 1px solid #000000;
+}
+

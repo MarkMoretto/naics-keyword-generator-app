@@ -6,11 +6,16 @@ const navLinks = [
     },
     {
         id: 2,
+        path: "/keyword-similarity",
+        text: "Keywords",
+    },      
+    {
+        id: 3,
         path: "/random-stopwords",
         text: "Stopwords",
     },    
     {
-        id: 3,
+        id: 4,
         path: "/about",
         text: "About",
     }
