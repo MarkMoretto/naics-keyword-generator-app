@@ -11,13 +11,15 @@ from datetime import datetime as dt
 
 # Third-party imports
 from fastapi import APIRouter, FastAPI
-from starlette.requests import Request
-from starlette.config import environ
-
-from fastapi.exceptions import RequestValidationError
-from starlette.exceptions import HTTPException
 from fastapi.responses import ORJSONResponse
+from fastapi.exceptions import RequestValidationError
+
+from pydantic import BaseModel
+
 from starlette.config import Config
+from starlette.config import environ
+from starlette.requests import Request
+from starlette.exceptions import HTTPException
 from starlette.datastructures import CommaSeparatedStrings, Secret
 from starlette.middleware.cors import CORSMiddleware
 
@@ -25,6 +27,13 @@ from starlette.middleware.cors import CORSMiddleware
 # Local imports
 from .config import prod_settings, dev_settings
 from ._preprocess import get_stopwords
+from ._embeddings import (
+    get_or_create_w2v_model,
+    make_tokens,
+    W2v_MODEL_PATH,
+    W2v_MODEL_PATH_ABS,
+    Word2Vec,
+    )
 
 
 # API  init
@@ -41,9 +50,6 @@ DEBUG: bool = config("DEBUG", cast=bool, default=False)
 SECRET_KEY: str  = config("SECRET_KEY", cast=Secret)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=CommaSeparatedStrings)
 
-
-# Set list of stopwords on startup.
-stopwords = get_stopwords()
 
 
 # Errors
@@ -76,6 +82,9 @@ async def home() -> ORJSONResponse:
     return ORJSONResponse(status_code=200, content = msg)
 
 
+# --- STOPWORDS --- #
+stopwords = get_stopwords()
+
 @api.get("/stopwords", response_class = ORJSONResponse)
 async def counter(sample_size: Optional[int] = -1) -> ORJSONResponse:
     """
@@ -95,17 +104,27 @@ async def counter(sample_size: Optional[int] = -1) -> ORJSONResponse:
     return ORJSONResponse(status_code=200, content = msg)
     
 
+# --- SIMILARITY --- #
 
-@api.get("/count/{phrase}", response_class = ORJSONResponse)
-async def counter(phrase: Optional[str] = None) -> ORJSONResponse:
-    if phrase is None:
-        raise HTTPException(status_code=404, detail = "String parameter not detected.")
-    else:
-        # --- Phase 4 --- #
-        msg = count_chars(phrase)   
-        if LOGGING_LEVEL <= logging.INFO:
-            logger.opt(colors = True).debug(f"<white>{phrase}</white> <white>=></white> <magenta>{msg}</magenta>")
-    return ORJSONResponse(status_code=200, content = {"result": msg})
+w2v_model = get_or_create_w2v_model()
+
+class SimilarityItem(BaseModel):
+    text_input: str
+    num_results: int = 10
+
+
+@api.post("/similarity", response_class = ORJSONResponse)
+async def counter(item: SimilarityItem) -> ORJSONResponse:
+    """Return top N words similar to a given set of English keywords."""
+    if not item.text_input is None:
+
+        _token_list = make_tokens(item.text_input.strip())
+        
+        # use all data and return single output
+        res = w2v_model.wv.most_similar_cosmul(positive = _token_list, topn = item.num_results)
+
+        return ORJSONResponse(status_code=200, content = dict(res))
+    raise HTTPException(status_code = 404, detail = "String parameter not detected.")    
 
 
 @api.get("/logs/")
