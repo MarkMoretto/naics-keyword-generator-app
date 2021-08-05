@@ -68,10 +68,11 @@ li a:hover {
 }
 
 
-#h-logo {
+#svg-logo {
     stroke: #ffffff;
     stroke-width: 0.25px;
     fill: #4a7729;
+    margin: 5px 0;
     /* border: 1px solid #ffffff; */
 }
 

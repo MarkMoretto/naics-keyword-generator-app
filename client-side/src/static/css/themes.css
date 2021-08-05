@@ -48,13 +48,4 @@
     --purple-cult-2: rgba(129, 83, 242, 1);		/* #8153f2 */
     --purple-cult-1: rgba(149, 131, 208, 1);		/* #9583d0 */    
 
-
-    /***
-        Humana
-    */
-    --humana-gray: rgba(65, 64, 66, 1);    
-    --humana-purple: rgba(97, 33, 102, 1);
-    --humana-green: rgba(74, 119, 41, 1);
-    --humana-lime: rgba(120, 190, 32, 1);
-    --humana-gold: rgba(255, 198, 0, 1);
 }

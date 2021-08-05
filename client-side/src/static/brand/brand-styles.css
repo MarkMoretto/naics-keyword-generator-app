@@ -1,0 +1,12 @@
+
+
+:root {
+    /***
+        Humana
+    */    
+    --humana-gray: rgba(65, 64, 66, 1);    
+    --humana-purple: rgba(97, 33, 102, 1);
+    --humana-green: rgba(74, 119, 41, 1);
+    --humana-lime: rgba(120, 190, 32, 1);
+    --humana-gold: rgba(255, 198, 0, 1);    
+}

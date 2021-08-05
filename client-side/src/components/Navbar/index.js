@@ -1,14 +1,15 @@
 import { NavLink } from "react-router-dom"
 import navbarLinks from "./nav-links"
 
-import Humana from "../logos/Humana"
+import BrandLogo from "../../static/brand"
+
 
 import "./styles.css"
 
 const Navbar = () => {
     return (
         <nav className="navBar">
-                <Humana />
+                <BrandLogo />
                 <ul>
                     {navbarLinks.map(item => {
                         return (

@@ -7,9 +7,6 @@ import KeywordSimilarity from "../pages/KeywordSimilarity"
 import Stopwords from "../pages/Stopwords"
 import PageNotFound from "../pages/PageNotFound"
 
-// client-side\src\static\image\brands\humana\h-logo.svg
-// import HLogo from "../../static/image/brands/humana/h-logo.svg"
-// import Humana from "../logos/Humana"
 
 const App = () => {
 	return (
