@@ -90,6 +90,13 @@ ol[role='list'] {
 	list-style: none;
 }
 
+/* Accessibility adjustment
+https://developer.mozilla.org/en-US/docs/Web/CSS/list-style-type
+*/
+ul li::before {
+	content: "\200B";
+}
+
 
 /* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {

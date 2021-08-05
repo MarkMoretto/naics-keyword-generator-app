@@ -1,10 +1,12 @@
 
 // Grid helper
 // TODO: Possibly add prop for number of columns.
+// import PropTypes from "prop-types"
+
 import styles from "./Griddy.module.css"
 
 const Griddy = ({ itemArray, numberColumns = 4, classname = ""}) => {
-    
+
     const colStyle = `col-${numberColumns}`
 
     return (
@@ -21,5 +23,19 @@ const Griddy = ({ itemArray, numberColumns = 4, classname = ""}) => {
         </div>          
     )
 }
+
+// Griddy.defaultProps  = {
+//     itemArray: PropTypes.array,
+//     numberColumns: 4,
+//     classname: PropTypes.string,
+// }
+
+// Griddy.propTypes = {
+//     itemArray: PropTypes.array,
+//     numberColumns: PropTypes.number,
+//     classname: PropTypes.string,
+// }
+
+
 
 export default Griddy

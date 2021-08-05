@@ -1,5 +1,6 @@
 
 import { useEffect, useRef, useState } from "react"
+
 // import Griddy from "../../Griddy"
 
 import "./styles.css"
@@ -11,7 +12,6 @@ let baseUrl = new URL("http://127.0.0.1:8000/similarity")
 const KeywordSimilarity = () => {
 
     const [similarKeywords, setSimilarKeywords] = useState("")
-    // const [stopwords, setStopwords] = useState({})
     const [postData, setPostData] = useState({
         text_input: "",
         num_results: 10,

@@ -83,7 +83,7 @@ async def home() -> ORJSONResponse:
 
 
 # --- STOPWORDS --- #
-stopwords = get_stopwords()
+STOPWORDS = get_stopwords()
 
 @api.get("/stopwords", response_class = ORJSONResponse)
 async def counter(sample_size: Optional[int] = -1) -> ORJSONResponse:
@@ -96,8 +96,8 @@ async def counter(sample_size: Optional[int] = -1) -> ORJSONResponse:
     """
     _sw = stopwords
     if sample_size > 0:
-        # _sw = choices(stopwords, k = sample_size)
-        _sw = rand_sample(stopwords, k = sample_size)
+        # _sw = choices(STOPWORDS, k = sample_size)
+        _sw = rand_sample(STOPWORDS, k = sample_size)
     msg = {
         "stopwords": _sw
     }
@@ -115,28 +115,48 @@ class SimilarityItem(BaseModel):
 
 @api.post("/similarity", response_class = ORJSONResponse)
 async def counter(item: SimilarityItem) -> ORJSONResponse:
-    """Return top N words similar to a given set of English keywords."""
+    """Return top N words similar to each of a given set of keywords."""
     if not item.text_input is None:
-
+        _output = []
         _token_list = make_tokens(item.text_input.strip())
         
         # use all data and return single output
         res = w2v_model.wv.most_similar_cosmul(positive = _token_list, topn = item.num_results)
+        dict_out = dict(res)
+        dict_out["tokens"] = _token_list
 
-        return ORJSONResponse(status_code=200, content = dict(res))
+        return ORJSONResponse(status_code=200, content = dict_out)
     raise HTTPException(status_code = 404, detail = "String parameter not detected.")    
 
 
-@api.get("/logs/")
-async def counter(phrase: Optional[str] = None) -> ORJSONResponse:
-    if phrase is None:
-        raise HTTPException(status_code=404, detail = "String parameter not detected.")
-    else:
-        # --- Phase 4 --- #
-        msg = count_chars(phrase)   
-        if LOGGING_LEVEL <= logging.INFO:
-            logger.opt(colors = True).debug(f"<white>{phrase}</white> <white>=></white> <magenta>{msg}</magenta>")
-    return ORJSONResponse(status_code=200, content = {"result": msg})
+
+
+@api.post("/similarity-cosmul", response_class = ORJSONResponse)
+async def counter(item: SimilarityItem) -> ORJSONResponse:
+    """Return top N words similar to a given set of keywords."""
+    if not item.text_input is None:
+        # Create list of word tokens.  This removes everything besides alphanumeric and hyphens
+        _token_list = make_tokens(item.text_input.strip())
+        
+        # use all data and return single output
+        res = w2v_model.wv.most_similar_cosmul(positive = _token_list, topn = item.num_results)
+        dict_out = dict(res)
+        dict_out["tokens"] = _token_list
+
+        return ORJSONResponse(status_code=200, content = dict_out)
+    raise HTTPException(status_code = 404, detail = "String parameter not detected.") 
+
+
+# @api.get("/logs/")
+# async def counter(phrase: Optional[str] = None) -> ORJSONResponse:
+#     if phrase is None:
+#         raise HTTPException(status_code=404, detail = "String parameter not detected.")
+#     else:
+#         # --- Phase 4 --- #
+#         msg = count_chars(phrase)   
+#         if LOGGING_LEVEL <= logging.INFO:
+#             logger.opt(colors = True).debug(f"<white>{phrase}</white> <white>=></white> <magenta>{msg}</magenta>")
+#     return ORJSONResponse(status_code=200, content = {"result": msg})
 
 
 # Instance app

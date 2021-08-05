@@ -16,3 +16,8 @@
 	border: 1px solid #000000;
 }
 
+.keyword-list ul li,
+.keyword-list ol li {
+	font-size: 2.1rem;
+}
+

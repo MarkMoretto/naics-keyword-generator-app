@@ -23,6 +23,7 @@ from src._types import (
     MutVector,
     Iterables,
     StrDict,
+    StrList,
     Tuple,
 )
 
@@ -65,7 +66,7 @@ def _set_stopwords(output_path: Path) -> None:
             
 
 
-def get_stopwords(min_stopword_len: int = 1) -> List:
+def get_stopwords(min_stopword_len: int = 1) -> StrList:
     """Return list of stopwords.
     
     Parameters
