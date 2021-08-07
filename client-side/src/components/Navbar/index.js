@@ -1,8 +1,7 @@
 import { NavLink } from "react-router-dom"
 import navbarLinks from "./nav-links"
 
-import BrandLogo from "../../static/brand"
-
+import BrandLogo from "../BrandLogo"
 
 import "./styles.css"
 

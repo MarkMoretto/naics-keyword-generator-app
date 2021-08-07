@@ -7,7 +7,7 @@ import "./styles.css"
 
 
 let baseUrl = new URL("http://127.0.0.1:8000/similarity")
-
+const inputPlaceholder = "Enter words here..."
 
 const KeywordSimilarity = () => {
 
@@ -68,17 +68,17 @@ const KeywordSimilarity = () => {
             <h5>Enter terms into the form and press enter to retrieve a list of relevant keywords.</h5>
             <div>
                 <form onSubmit={handleSubmit} onReset={resetPage} className="form-container">
-                    <label htmlFor="id_sample_size">No. of Words:</label>
+                    <label htmlFor="id_sample_size">Terms:&nbsp;</label>
                     <input 
                         id="id_sample_size"
                         name="text_input"
                         type="text"
-                        placeholder="..."
+                        placeholder={inputPlaceholder}
                         value={postData.text_input}
                         onChange={onChange}
                         ref={refTextInput}
                         onFocus={(e) => e.target.placeholder = ""} 
-                        onBlur={(e) => e.target.placeholder = "..."}                        
+                        onBlur={(e) => e.target.placeholder = `${inputPlaceholder}`}
                     />
                     <button className="btn" type="submit">Go!</button>
                     <button className="btn" type="reset">Reset</button>

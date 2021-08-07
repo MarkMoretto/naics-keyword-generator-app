@@ -2,11 +2,11 @@
 
 :root {
     /***
-        Humana
+        braand theme
     */    
-    --humana-gray: rgba(65, 64, 66, 1);    
-    --humana-purple: rgba(97, 33, 102, 1);
-    --humana-green: rgba(74, 119, 41, 1);
-    --humana-lime: rgba(120, 190, 32, 1);
-    --humana-gold: rgba(255, 198, 0, 1);    
+    --brand-gray: rgba(65, 64, 66, 1);    
+    --brand-purple: rgba(97, 33, 102, 1);
+    --brand-green: rgba(74, 119, 41, 1);
+    --brand-lime: rgba(120, 190, 32, 1);
+    --brand-gold: rgba(255, 198, 0, 1);    
 }

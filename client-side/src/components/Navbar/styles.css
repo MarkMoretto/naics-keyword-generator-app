@@ -11,7 +11,7 @@ nav {
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: stretch;
-    background-color: var(--humana-gray);
+    background-color: var(--brand-gray);
 }
 
 
@@ -43,9 +43,9 @@ li a:hover {
 }
 
 .active-link {
-    color: var(--humana-lime);
+    color: var(--brand-lime);
     text-decoration: underline;
-    text-decoration-color: var(--humana-gold);
+    text-decoration-color: var(--brand-gold);
 }
 
 .active-link:hover {

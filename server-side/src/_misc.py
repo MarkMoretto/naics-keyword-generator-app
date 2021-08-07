@@ -46,3 +46,12 @@ for i in range(len(hh_bars) - 1):
 
 def prison(n, m, h, v):
     # Write your code here
+    ...
+
+
+
+    
+
+
+
+

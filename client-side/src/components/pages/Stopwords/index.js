@@ -6,6 +6,9 @@ import "./styles.css"
 
 let baseUrl = new URL("http://127.0.0.1:8000/stopwords")
 
+const inputPlaceholder = "10"
+
+
 const Stopwords = () => {
     const [stopwordsUrl, setStopwordsUrl] = useState(baseUrl)
     const [stopwords, setStopwords] = useState({})
@@ -73,21 +76,21 @@ const Stopwords = () => {
                         id="id_sample_size"
                         name="sample_size"
                         type="text"
-                        placeholder="..."
+                        placeholder={inputPlaceholder}
                         value={qryParams.sample_size}
                         onChange={onChange}
                         ref={refTextInput}
                         onFocus={(e) => e.target.placeholder = ""} 
-                        onBlur={(e) => e.target.placeholder = "..."}                        
+                        onBlur={(e) => e.target.placeholder = `${inputPlaceholder}`}                   
                     />
                     <button class="stopword-btn" type="submit">Go!</button>
                     <button class="stopword-btn" type="reset">Reset</button>
                 </form>
             </div>
 
-            <div id="stopword-list">
+            <div className="stopword-list">
                 <Griddy itemArray={stopwords} numberColumns={4} classname={"stopword-list"} />
-            </div>
+            </div>     
         </>
     )
 }

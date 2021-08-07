@@ -1,0 +1,26 @@
+
+
+
+gClass {
+    opacity: 1;
+    stroke: none;
+}
+
+.path1 {
+    fill: #ffcf41;
+    stroke: none;
+    stroke-width:0.259699px;
+    stroke-linecap: butt;
+    stroke-linejoin:miter;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+}
+
+.path2 {
+    fill: #000000;
+    stroke: none;
+    stroke-width: 0.259493px;
+    stroke-linecap: butt;
+    stroke-linejoin: miter;
+    stroke-opacity: 1;
+}

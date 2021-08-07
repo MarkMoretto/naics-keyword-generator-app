@@ -107,6 +107,35 @@ def make_tokens(text: str, fn = lambda w: re.split(r"`", re.sub(r"([\W\s]+)", "`
 # make_tokens(tst)
 # w2v_model = get_or_create_w2v_model(create_new = True)
 
+# def get_index(word: str, kv: KeyedVectors) -> int:
+#     """Return integer value representing index of keyword within word vector."""
+#     return kv.key_to_index[word]
+
+# def get_word(index: int, kv: KeyedVectors) -> int:
+#     """Return string value representing keyword based on index parameter from within word vector."""
+#     return kv.index_to_key[index]
+
+
+## Closer than
+## Might be good for suggesting better terms?
+# w2v_model.wv.closer_than("health", "care")
+
+## Distance between two keys
+# w2v_model.wv.distance("health", "care")
+
+
+## Doesn't match out of a list of words
+# res = w2v_model.wv.similar_by_key("health", topn=11)
+# w2v_model.wv.doesnt_match(list(dict(res).keys()))
+
+## Different training method.
+# documents = get_data(min_word_length = 3)
+# pmodel = p_Word2Vec()
+# pmodel.build_vocab(documents.values)
+# pmodel.train(documents.values, total_examples = pmodel.corpus_count, epochs = pmodel.epochs)
+# pmodel.wv.most_similar(positive = ["health"], topn=10)
+# pmodel.wv.most_similar(positive = ["care"], topn=10)
+# pmodel.wv.most_similar(positive = ["health","care"], topn=10)
 
 # Similarity
 # w2v_model.wv.most_similar("health", topn=10)
