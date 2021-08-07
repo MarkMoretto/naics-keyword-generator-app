@@ -111,40 +111,63 @@ w2v_model = get_or_create_w2v_model()
 class SimilarityItem(BaseModel):
     text_input: str
     num_results: int = 10
+    negative_terms: str = ""
 
 
 @api.post("/similarity", response_class = ORJSONResponse)
 async def counter(item: SimilarityItem) -> ORJSONResponse:
-    """Return top N words similar to each of a given set of keywords."""
+    """Return top N words similar to each of a given set of keywords.
+    Handles both positive and negative terms.
+    """
     if not item.text_input is None:
-        _output = []
-        _token_list = make_tokens(item.text_input.strip())
-        
-        # use all data and return single output
-        res = w2v_model.wv.most_similar_cosmul(positive = _token_list, topn = item.num_results)
-        dict_out = dict(res)
-        dict_out["tokens"] = _token_list
+        # Return object and type.
+        res: KeyedVecList = None
+        _positive_terms: StrList = []        
+        _negative_terms: StrList = []
 
-        return ORJSONResponse(status_code=200, content = dict_out)
+        _positive_terms = make_tokens(item.text_input.strip())
+
+        if len(item.negative_terms) > 0:
+            _negative_terms = make_tokens(item.negative_terms.strip())
+            res = w2v_model.wv.most_similar_cosmul(
+                positive = _positive_terms,
+                negative = _negative_terms,
+                topn = item.num_results,
+                )
+
+        else:
+            res = w2v_model.wv.most_similar(positive = _positive_terms, topn = item.num_results)
+
+        return ORJSONResponse(status_code=200, content = dict(res))
     raise HTTPException(status_code = 404, detail = "String parameter not detected.")    
 
 
-
-
-@api.post("/similarity-cosmul", response_class = ORJSONResponse)
+@api.post("/similarity-ext", response_class = ORJSONResponse)
 async def counter(item: SimilarityItem) -> ORJSONResponse:
-    """Return top N words similar to a given set of keywords."""
-    if not item.text_input is None:
-        # Create list of word tokens.  This removes everything besides alphanumeric and hyphens
-        _token_list = make_tokens(item.text_input.strip())
-        
-        # use all data and return single output
-        res = w2v_model.wv.most_similar_cosmul(positive = _token_list, topn = item.num_results)
-        dict_out = dict(res)
-        dict_out["tokens"] = _token_list
+    """Return top N words similar to each of a given set of keywords.
 
-        return ORJSONResponse(status_code=200, content = dict_out)
-    raise HTTPException(status_code = 404, detail = "String parameter not detected.") 
+    Handles both positive and negative terms.
+
+    Extended -> Returns two sets of results.
+    """
+    if not item.text_input is None:
+        # Return object and type.
+        res: KeyedVecList = None
+        res_cosmul: KeyedVecList = None
+        _positive_terms: StrList = []        
+        _negative_terms: StrList = []
+
+        _positive_terms = make_tokens(item.text_input.strip())
+
+        if len(item.negative_terms) > 0:
+            _negative_terms = make_tokens(item.negative_terms.strip())
+
+        res = w2v_model.wv.most_similar(positive = _positive_terms, negative = _negative_terms, topn = item.num_results)
+        res_cosmul = w2v_model.wv.most_similar_cosmul(positive = _positive_terms, negative = _negative_terms, topn = item.num_results,)
+
+        return ORJSONResponse(status_code=200, content = [dict(most_similar = dict(res)), dict(most_similar_cosmul = dict(res_cosmul))])
+
+    raise HTTPException(status_code = 404, detail = "String parameter not detected.")    
 
 
 # @api.get("/logs/")
