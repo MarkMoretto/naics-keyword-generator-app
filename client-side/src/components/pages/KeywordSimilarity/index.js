@@ -64,8 +64,8 @@ const KeywordSimilarity = () => {
 
     return (
         <>
-            <h2>Random English Stopwords!</h2>
-            <h5>Enter the number of words to return and press Go!</h5>
+            <h2>Relevant Keyword Generator</h2>
+            <h5>Enter terms into the form and press enter to retrieve a list of relevant keywords.</h5>
             <div>
                 <form onSubmit={handleSubmit} onReset={resetPage} className="form-container">
                     <label htmlFor="id_sample_size">No. of Words:</label>
