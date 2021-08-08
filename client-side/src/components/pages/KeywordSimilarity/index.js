@@ -9,12 +9,23 @@ import "./styles.css"
 let baseUrl = new URL("http://127.0.0.1:8000/similarity")
 const inputPlaceholder = "Enter words here..."
 
+
+
+const CheckBox = props => {
+    return (
+        <input type="checkbox" {...props} />
+    )
+}
+
+const roundFloat = obj => Number.parseFloat(obj).toFixed(4)
+
 const KeywordSimilarity = () => {
 
     const [similarKeywords, setSimilarKeywords] = useState("")
     const [postData, setPostData] = useState({
         text_input: "",
         num_results: 10,
+        negative_terms: "",
     })
     const refTextInput = useRef()
 
@@ -29,8 +40,6 @@ const KeywordSimilarity = () => {
 
     useEffect(() => {
         console.log("useEffect called.")
-        // updateQuery(qryParams)
-        // refTextInput.current.focus()
     })
 
     const resetPage = () => {
@@ -38,6 +47,7 @@ const KeywordSimilarity = () => {
         setPostData({
             text_input: "",
             num_results: 10,
+            negative_terms: "",
         })
         refTextInput.current.focus()
     }
@@ -85,14 +95,31 @@ const KeywordSimilarity = () => {
                 </form>
             </div>
 
-            <div className="keyword-list">
-                <ol>
+            <div className="item-list">
+                {similarKeywords ? Object.entries(JSON.parse(similarKeywords)).map((o, idx) => {
+                    return (
+                        <div className="list-row">
+                            <div className="list-item" key={`index-${idx}`}>{idx+1}</div>
+                            <div key={`keyword-${idx}`} className="list-item">{o[0]}</div>
+                            <div key={`score-${idx}`} className="list-item">{roundFloat(o[1])}</div>
+                            <div className="list-item">
+                                <CheckBox 
+                                    key={`checkbox-${idx}`}
+                                    name={o[0]}
+                                />
+                            </div>
+                        </div>
+                    )
+                }): ""}                    
+
+
+                {/* <ol>
                     {similarKeywords ? Object.entries(JSON.parse(similarKeywords)).map(el => {
                         return (
                             <li key={el[0]}>{el[0]}</li>
                         )
                     }): ""}
-                </ol>
+                </ol> */}
             </div>
         </>
     )
