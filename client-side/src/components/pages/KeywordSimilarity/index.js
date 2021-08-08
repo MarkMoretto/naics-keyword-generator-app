@@ -99,10 +99,10 @@ const KeywordSimilarity = () => {
                 {similarKeywords ? Object.entries(JSON.parse(similarKeywords)).map((o, idx) => {
                     return (
                         <div className="list-row">
-                            <div className="list-item" key={`index-${idx}`}>{idx+1}</div>
+                            <div className="list-item centered" key={`index-${idx}`}>{idx+1}</div>
                             <div key={`keyword-${idx}`} className="list-item">{o[0]}</div>
-                            <div key={`score-${idx}`} className="list-item">{roundFloat(o[1])}</div>
-                            <div className="list-item">
+                            <div key={`score-${idx}`} className="list-item centered">{roundFloat(o[1])}</div>
+                            <div className="list-item centered">
                                 <CheckBox 
                                     key={`checkbox-${idx}`}
                                     name={o[0]}
