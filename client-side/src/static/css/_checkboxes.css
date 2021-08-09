@@ -1,0 +1,50 @@
+/* Checkbox style elements */
+
+/* Checkbox sizing */
+/* input[type='checkbox'] { */
+	/* transform: scale(1.5); */
+	/* zoom: 1.8; */
+/* } */
+
+/* Colors */
+
+/* input[type='checkbox']:checked {
+    box-shadow: 0 0 0 2px var(--summer-melon);
+} */
+
+
+
+/*********************
+Pseudo-styled checkbox
+Inspo: https://dev.to/kallmanation/styling-a-checkbox-with-only-css-3o3p
+*********************/
+
+/*
+label > input[type='checkbox'] {
+    display: none;
+}
+
+label > input[type='checkbox'] + *::before {
+    content: "";
+    flex-shrink: 0;
+    display: flex;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 10%;
+    border: 0.1rem solid gray;
+}
+
+/* Checkmark: https://unicode-table.com/en/1F5F8/ */
+/*
+label > input[type='checkbox']:checked + *::before {
+    content: "✔";
+    color: #ffffff;
+    text-align: center;
+    background-color: var(--brand-green);
+    border-color: coral;
+}
+
+label > input[type='checkbox']:checked + * {
+    color: pink;
+}
+*/

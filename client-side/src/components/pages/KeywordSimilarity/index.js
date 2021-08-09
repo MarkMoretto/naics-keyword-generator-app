@@ -1,24 +1,29 @@
 
 import { useEffect, useRef, useState } from "react"
-
-// import Griddy from "../../Griddy"
+import CheckBox from "../../CheckBox"
 
 import "./styles.css"
 
-
-let baseUrl = new URL("http://127.0.0.1:8000/similarity")
+/**
+ * Constants
+*/
+const baseUrl = new URL("http://127.0.0.1:8000/similarity")
 const inputPlaceholder = "Enter words here..."
+const listHeaders = ["rank", "keyword", "score", "irrelevant?"]
 
 
 
-const CheckBox = props => {
-    return (
-        <input type="checkbox" {...props} />
-    )
-}
 
-const roundFloat = obj => Number.parseFloat(obj).toFixed(4)
+/**
+ * Round mantissa to a given number of values.
+*/
+const roundFloat = (obj, numberOfPlaces = 4) => Number.parseFloat(obj).toFixed(numberOfPlaces)
 
+
+
+/**
+ * KeywordSimilarity component
+*/
 const KeywordSimilarity = () => {
 
     const [similarKeywords, setSimilarKeywords] = useState("")
@@ -96,21 +101,29 @@ const KeywordSimilarity = () => {
             </div>
 
             <div className="item-list">
+                <div className="list-row">
+                {similarKeywords ? Object.values(listHeaders).map((o, i) => {
+                    return (
+                        <div key={`header-${i}`} className="list-item centered big-words">{o}</div>
+                    )
+                }): ""}
+                </div>
                 {similarKeywords ? Object.entries(JSON.parse(similarKeywords)).map((o, idx) => {
                     return (
                         <div className="list-row">
-                            <div className="list-item centered" key={`index-${idx}`}>{idx+1}</div>
-                            <div key={`keyword-${idx}`} className="list-item">{o[0]}</div>
-                            <div key={`score-${idx}`} className="list-item centered">{roundFloat(o[1])}</div>
-                            <div className="list-item centered">
+                            <div className="list-item centered med-words" key={`index-${idx}`}>{idx+1}</div>
+                            <div key={`keyword-${idx}`} className="list-item med-words">{o[0]}</div>
+                            <div key={`score-${idx}`} className="list-item centered med-words">{roundFloat(o[1])}</div>
+                            <div key={`relevant-${idx}`} className="list-item centered med-words">
                                 <CheckBox 
                                     key={`checkbox-${idx}`}
                                     name={o[0]}
+                                    value={o[0]}
                                 />
                             </div>
                         </div>
                     )
-                }): ""}                    
+                }): ""}
 
 
                 {/* <ol>

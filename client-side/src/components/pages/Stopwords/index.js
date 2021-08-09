@@ -90,7 +90,7 @@ const Stopwords = () => {
 
             <div className="stopword-list">
                 <Griddy itemArray={stopwords} numberColumns={4} classname={"stopword-list"} />
-            </div>     
+            </div>            
         </>
     )
 }

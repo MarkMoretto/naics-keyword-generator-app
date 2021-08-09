@@ -23,19 +23,19 @@
 
 
 .item-list {
-	max-width: 50%;
-	min-height: calc(100vh * 0.2);
+	/* font-size: 1.75rem; */
+	max-width: 60%;
 	display: flex;
 	flex-flow: column wrap;
-	/* justify-content: center; */
 	margin: 0 auto;
-	gap: 2rem;
+	padding: 0;
+	height: min-content;
 	border: 1px solid palevioletred;
 }
 
 .list-row {
+	height: min-content;
 	display: flex;
-	flex-flow: row wrap;
 	border: 1px solid blue;
 }
 
@@ -43,24 +43,32 @@
 	min-width: 25%;
 	display: flex;
 	flex-flow: column wrap;
-	align-self: center;
-	float: left;
 	border: 1px solid orange;
 }
 
 .centered {
 	align-content: center;
-	align-items: center;
 	justify-content: center;
 }
 
+.big-words {
+	font-size: 2.4rem;
+	font-weight: 700;
+}
 
-.flex-sm {
-	flex-grow: 1;
+.med-words {
+	font-size: 1.75rem;
+	font-weight: 500;	
 }
-.flex-md {
-	flex-grow: 1;
-}
-.flex-lg {
-	flex-grow: 1;
-}
+
+
+
+/* Checkbox sizing */
+
+/* input[type='checkbox'] {
+	zoom: 1.8;
+} */
+
+/* input[type='checkbox']:checked {
+    box-shadow: 0 0 0 2px var(--summer-melon);
+} */
