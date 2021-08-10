@@ -151,3 +151,4 @@ cython_debug/
 .vscode/
 dev[_-]*.*
 client-side/src/static/image/brands/**/*.svg
+server-side/src/_reviews.py
