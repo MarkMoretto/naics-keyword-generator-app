@@ -1,3 +1,4 @@
+#!/bin/python3
 
 import re
 from io import BytesIO, StringIO

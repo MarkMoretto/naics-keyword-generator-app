@@ -152,5 +152,4 @@ cython_debug/
 dev[_-]*.*
 client-side/src/static/image/brands/**/*.svg
 server-side/src/_reviews.py
-
-**/src/_spacy_tuts.py
+server-side/src/_spacy_tuts.py
