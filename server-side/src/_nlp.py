@@ -1,16 +1,16 @@
-# server-side\src\_nlp.py
+#!/bin/python3
+
 
 # __all__ = ["load_model"]
 
-# --- Gensim action --- #
-# from nltk.tokenize import RegexpTokenizer
-# from nltk.stem.porter import PorterStemmer
 import re
+
+# --- Gensim action --- #
+
 from gensim import corpora, similarities
 from gensim.similarities import MatrixSimilarity
 from gensim.models import LsiModel, LdaModel, LdaMulticore, TfidfModel
 
-# from ._preprocess import df_for_nlp
 from src._preprocess import df_for_nlp
 from src import DATA_DIR, Path
 

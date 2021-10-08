@@ -1,3 +1,5 @@
+#!/bin/python3
+
 __all__ = [
     "df_for_nlp",
     "create_and_clean_df",

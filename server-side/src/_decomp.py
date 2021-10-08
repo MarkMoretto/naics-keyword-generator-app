@@ -1,4 +1,4 @@
-
+#!/bin/python3
 
 from functools import partial
 
